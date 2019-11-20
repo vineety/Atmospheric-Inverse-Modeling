@@ -1,0 +1,17 @@
+Steps 1,2,3,4 are the same as for the serial version.
+Test data sets and configuration files are the same.
+
+5. Run the following command to compile, but need to change 
+/share/apps/intel/composer_xe_2011_sp1.7.256/mkl/ to your MKL path first.
+
+mpif90 -o inverse_parallel.exe constants.f90 file_io.f90 initialize.f90 library_generic.f90 parallel.f90 library_inverse.f90 steps_mod.f90 distance.f90 inverse_main.f90 -O3 -L /share/apps/intel/composer_xe_2011_sp1.7.256/mkl/lib/intel64/ -I /share/apps/intel/composer_xe_2011_sp1.7.256/mkl/include/ -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread
+
+6. Run the code with command (replace 2 with your desired number of processors): 
+   mpirun -c 2 ./inverse_parallel.exe config_test.txt
+
+7. Or your can use a PBS script to submit the job: qsub run_parallel.sh
+   Please see run_parallel.sh as an example. You'll need to change the path, 
+   email address, number of nodes, memory etc in this script. A text file named 
+   hostfile is needed in order to run this PBS script. An example hostfile is provided. 
+   But it's only specific to our cluster and corresponding to the 8 nodes requested. 
+   You'll need to change this file accordingly.
